@@ -26,11 +26,17 @@ function getPreviewSource(media: ProjectMedia) {
   return media.type === 'video' ? media.poster : media.src
 }
 
-export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
+export function ProjectMediaGallery({
+  media,
+}: ProjectMediaGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null)
+
   const orderedMedia = useMemo(
-    () => [...media].sort((first, second) => first.order - second.order),
+    () =>
+      [...media].sort(
+        (first, second) => first.order - second.order,
+      ),
     [media],
   )
 
@@ -40,6 +46,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
 
   const handleClose = () => {
     setActiveIndex(null)
+
     window.requestAnimationFrame(() => {
       lastTriggerRef.current?.focus()
     })
@@ -55,7 +62,7 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
             <button
               aria-label={`Open ${item.title ?? item.alt}`}
               className={cn(
-                'media-frame media-frame--contain group min-h-0 w-full cursor-pointer bg-black/35 text-left transition hover:border-[var(--accent)] focus-visible:outline-offset-8',
+                'media-frame media-frame--contain group min-h-0 w-full cursor-pointer bg-black/35 text-left transition hover:border-(--accent) focus-visible:outline-offset-8',
                 getMediaSpan(item),
               )}
               data-media-orientation={item.orientation}
@@ -64,14 +71,18 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 lastTriggerRef.current = event.currentTarget
                 setActiveIndex(index)
               }}
-              style={{ aspectRatio: `${item.width} / ${item.height}` }}
+              style={{
+                aspectRatio: `${item.width} / ${item.height}`,
+              }}
               type="button"
             >
               {previewSource ? (
                 <img
                   alt={item.type === 'image' ? item.alt : ''}
-                  aria-hidden={item.type === 'video' ? 'true' : undefined}
-                  className="relative z-[2] h-full w-full object-contain transition duration-500 group-hover:scale-[1.015]"
+                  aria-hidden={
+                    item.type === 'video' ? true : undefined
+                  }
+                  className="relative z-2 h-full w-full object-contain transition duration-500 group-hover:scale-[1.015]"
                   decoding="async"
                   loading="lazy"
                   src={previewSource}
@@ -79,10 +90,10 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
               ) : (
                 <video
                   aria-label={item.alt}
-                  className="relative z-[2] h-full w-full object-contain"
+                  className="relative z-2 h-full w-full object-contain"
                   muted
                   playsInline
-                  preload="none"
+                  preload="metadata"
                   src={item.src}
                 />
               )}
@@ -93,11 +104,13 @@ export function ProjectMediaGallery({ media }: ProjectMediaGalleryProps) {
                 </span>
               ) : null}
 
-              <span className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4">
-                <span className="mono-label block text-[10px] text-[var(--accent)]">
-                  {item.type === 'video' ? 'Video' : 'Image'} / {item.orientation}
+              <span className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-black/80 via-black/30 to-transparent p-4">
+                <span className="mono-label block text-[10px] text-(--accent)">
+                  {item.type === 'video' ? 'Video' : 'Image'} /{' '}
+                  {item.orientation}
                 </span>
-                <span className="mt-1 block text-sm font-semibold text-[var(--text)]">
+
+                <span className="mt-1 block text-sm font-semibold text-(--text)">
                   {item.title ?? item.alt}
                 </span>
               </span>

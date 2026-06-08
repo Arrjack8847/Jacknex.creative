@@ -2,30 +2,29 @@ export const serviceGroups = [
   {
     title: 'Video Editing',
     summary:
-      'Cinematic edits with rhythm, pacing, color, sound, and story direction for brands, creators, and events.',
+      'Cinematic edits with rhythm, pacing, color, sound, and story direction for creators, clients, and events.',
     services: [
-      'Short-form social media edits',
+      'Short-form vertical edits',
+      'Music teasers',
+      'Event recap edits',
       'Cinematic promotional videos',
-      'Wedding and event films',
       'YouTube editing',
-      'Product advertisements',
       'Colour grading',
       'Sound design',
-      'Motion graphics',
+      'Final delivery exports',
     ],
   },
   {
-    title: 'Graphic Design',
+    title: 'Supporting Visuals',
     summary:
-      'Modern visual systems for campaigns, social content, posters, thumbnails, events, and branded moments.',
+      'Simple visual support for video releases, covers, thumbnails, posters, and event edits.',
     services: [
-      'Social media posts',
-      'Posters and flyers',
+      'Poster artwork',
       'YouTube thumbnails',
-      'Promotional banners',
-      'Event graphics',
-      'Brand visuals',
-      'Motion posters',
+      'Video cover images',
+      'Event title cards',
+      'Release graphics',
+      'Basic export crops',
     ],
   },
 ] as const

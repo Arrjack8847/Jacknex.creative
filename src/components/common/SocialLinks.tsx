@@ -14,8 +14,8 @@ function hasUsableHref(href: string) {
   return trimmedHref.length > 0 && trimmedHref !== '#'
 }
 
-function isExternalHref(href: string) {
-  return href.startsWith('http')
+function shouldOpenInNewTab(link: SocialLink) {
+  return link.id !== 'email' && hasUsableHref(link.href)
 }
 
 export function SocialLinks({
@@ -35,7 +35,7 @@ export function SocialLinks({
     <div className={cn('flex flex-wrap items-center gap-3', className)}>
       {usableLinks.map((link) => {
         const Icon = link.icon
-        const external = isExternalHref(link.href)
+        const opensInNewTab = shouldOpenInNewTab(link)
 
         return (
           <a
@@ -47,8 +47,8 @@ export function SocialLinks({
             href={link.href}
             key={`${link.label}-${link.href}`}
             onClick={onLinkClick}
-            rel={external ? 'noopener noreferrer' : undefined}
-            target={external ? '_blank' : undefined}
+            rel={opensInNewTab ? 'noopener noreferrer' : undefined}
+            target={opensInNewTab ? '_blank' : undefined}
           >
             <Icon size={iconSize} />
           </a>

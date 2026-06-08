@@ -1,11 +1,11 @@
 export type ProjectCategory =
-  | 'video-editing'
-  | 'motion-design'
-  | 'graphic-design'
-  | 'branding'
-  | 'social-media'
+  | 'music-video'
+  | 'event-recap'
+  | 'vertical-edit'
+  | 'video-teaser'
+  | 'supporting-visual'
 
-export type ProjectType = 'client' | 'concept' | 'personal'
+export type ProjectKind = 'client' | 'concept' | 'personal'
 
 export type ProjectMediaType = 'image' | 'video'
 
@@ -35,14 +35,17 @@ export interface Project {
   categories: ProjectCategory[]
   year: string
   client: string
-  projectType: ProjectType
+  projectType: string
+  projectKind: ProjectKind
   roles: string[]
   tools: string[]
   challenge: string
   approach: string
   outcome: string
   cover: ProjectMedia
-  featuredMedia?: ProjectMedia
+  previewVideo?: string
+  fullVideo?: ProjectMedia
+  externalVideoUrl?: string
   gallery: ProjectMedia[]
   featured: boolean
   order: number

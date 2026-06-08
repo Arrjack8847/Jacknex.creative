@@ -1,9 +1,9 @@
 export const serviceOptions = [
   'Video Editing',
-  'Motion Design',
-  'Graphic Design',
-  'Social Media Content',
-  'Branding',
+  'Music Video Teaser',
+  'Event Recap Edit',
+  'Vertical Short-form Edit',
+  'Poster / Thumbnail Support',
   'Other',
 ] as const
 
@@ -14,7 +14,7 @@ export const budgetOptions = [
   'Not sure yet',
 ] as const
 
-export const contactMethods = ['Email', 'Viber', 'Telegram', 'Facebook', 'Instagram', 'LinkedIn'] as const
+export const contactMethods = ['Email', 'Viber', 'Telegram', 'Facebook'] as const
 
 export interface ContactFormData {
   fullName: string

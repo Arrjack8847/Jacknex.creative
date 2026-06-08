@@ -1,4 +1,4 @@
-import { Mail, Phone, Send } from 'lucide-react'
+import { Mail } from 'lucide-react'
 import { siteConfig } from '../../data/siteConfig'
 import { Button } from './Button'
 
@@ -19,12 +19,6 @@ export function ContactCTA() {
           <Button to="/contact">Start a Project</Button>
           <Button href={siteConfig.contact.emailHref} icon={<Mail size={17} />} variant="secondary">
             Email Me
-          </Button>
-          <Button href={siteConfig.contact.viber} icon={<Phone size={17} />} variant="secondary">
-            Viber
-          </Button>
-          <Button href={siteConfig.contact.telegram} icon={<Send size={17} />} variant="secondary">
-            Telegram
           </Button>
         </div>
       </div>

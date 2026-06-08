@@ -13,15 +13,21 @@ function getMediaSource(media: ProjectMedia) {
   return media.type === 'video' ? media.poster : media.src
 }
 
-export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: MediaLightboxProps) {
+export function MediaLightbox({
+  media,
+  activeIndex,
+  onClose,
+  onNavigate,
+}: MediaLightboxProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+
   const activeMedia = media[activeIndex]
   const hasMultipleItems = media.length > 1
-  const backgroundSource = getMediaSource(activeMedia)
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
+
     document.body.style.overflow = 'hidden'
     closeButtonRef.current?.focus()
 
@@ -58,16 +64,23 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
       ).filter((element) => !element.hasAttribute('disabled'))
 
       const firstElement = focusableElements[0]
-      const lastElement = focusableElements[focusableElements.length - 1]
+      const lastElement =
+        focusableElements[focusableElements.length - 1]
 
       if (!firstElement || !lastElement) {
         return
       }
 
-      if (event.shiftKey && document.activeElement === firstElement) {
+      if (
+        event.shiftKey &&
+        document.activeElement === firstElement
+      ) {
         event.preventDefault()
         lastElement.focus()
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
+      } else if (
+        !event.shiftKey &&
+        document.activeElement === lastElement
+      ) {
         event.preventDefault()
         firstElement.focus()
       }
@@ -78,11 +91,33 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [activeIndex, hasMultipleItems, media.length, onClose, onNavigate])
+  }, [
+    activeIndex,
+    hasMultipleItems,
+    media.length,
+    onClose,
+    onNavigate,
+  ])
+
+  if (!activeMedia) {
+    return null
+  }
+
+  const backgroundSource = getMediaSource(activeMedia)
+
+  const showPreviousMedia = () => {
+    onNavigate((activeIndex - 1 + media.length) % media.length)
+  }
+
+  const showNextMedia = () => {
+    onNavigate((activeIndex + 1) % media.length)
+  }
 
   return (
     <div
-      aria-label={`${activeMedia.title ?? activeMedia.alt} fullscreen viewer`}
+      aria-label={`${
+        activeMedia.title ?? activeMedia.alt
+      } fullscreen viewer`}
       aria-modal="true"
       className="fixed inset-0 z-50 flex min-h-dvh flex-col bg-black/95 text-white"
       ref={dialogRef}
@@ -99,9 +134,10 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
 
       <div className="relative z-10 flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <div>
-          <p className="mono-label text-[10px] text-[var(--accent)]">
+          <p className="mono-label text-[10px] text-(--accent)">
             {activeIndex + 1} / {media.length}
           </p>
+
           <p className="mt-1 max-w-[70vw] truncate text-sm text-white/75">
             {activeMedia.title ?? activeMedia.alt}
           </p>
@@ -109,7 +145,7 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
 
         <button
           aria-label="Close media viewer"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] border border-white/20 bg-black/40 text-white backdrop-blur transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-sm border border-white/20 bg-black/40 text-white backdrop-blur transition hover:border-(--accent) hover:text-(--accent)"
           onClick={onClose}
           ref={closeButtonRef}
           type="button"
@@ -122,8 +158,8 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
         {hasMultipleItems ? (
           <button
             aria-label="Show previous media"
-            className="absolute left-3 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:border-[var(--accent)] hover:text-[var(--accent)] sm:left-5"
-            onClick={() => onNavigate((activeIndex - 1 + media.length) % media.length)}
+            className="absolute left-3 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:border-(--accent) hover:text-(--accent) sm:left-5"
+            onClick={showPreviousMedia}
             type="button"
           >
             <ChevronLeft size={22} />
@@ -134,20 +170,23 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
           {activeMedia.type === 'image' ? (
             <img
               alt={activeMedia.alt}
-              className="h-auto max-h-[calc(100dvh-10rem)] w-auto max-w-[calc(100vw-2rem)] rounded-[6px] object-contain shadow-[0_28px_120px_rgba(0,0,0,0.75)] sm:max-w-[calc(100vw-8rem)]"
+              className="h-auto max-h-[calc(100dvh-10rem)] w-auto max-w-[calc(100vw-2rem)] rounded-md object-contain shadow-[0_28px_120px_rgba(0,0,0,0.75)] sm:max-w-[calc(100vw-8rem)]"
               decoding="async"
               src={activeMedia.src}
             />
           ) : (
             <video
+              key={`${activeMedia.src}-${activeIndex}`}
               aria-label={activeMedia.alt}
-              className="h-auto max-h-[calc(100dvh-10rem)] w-auto max-w-[calc(100vw-2rem)] rounded-[6px] bg-black object-contain shadow-[0_28px_120px_rgba(0,0,0,0.75)] sm:max-w-[calc(100vw-8rem)]"
+              className="h-auto max-h-[calc(100dvh-10rem)] w-auto max-w-[calc(100vw-2rem)] rounded-md bg-black object-contain shadow-[0_28px_120px_rgba(0,0,0,0.75)] sm:max-w-[calc(100vw-8rem)]"
               controls
               playsInline
               poster={activeMedia.poster}
               preload="metadata"
               src={activeMedia.src}
-            />
+            >
+              Your browser does not support HTML video.
+            </video>
           )}
 
           {activeMedia.caption ? (
@@ -160,8 +199,8 @@ export function MediaLightbox({ media, activeIndex, onClose, onNavigate }: Media
         {hasMultipleItems ? (
           <button
             aria-label="Show next media"
-            className="absolute right-3 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:border-[var(--accent)] hover:text-[var(--accent)] sm:right-5"
-            onClick={() => onNavigate((activeIndex + 1) % media.length)}
+            className="absolute right-3 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:border-(--accent) hover:text-(--accent) sm:right-5"
+            onClick={showNextMedia}
             type="button"
           >
             <ChevronRight size={22} />

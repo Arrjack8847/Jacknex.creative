@@ -7,14 +7,14 @@ import { serviceGroups, workingProcess } from '../data/services'
 export function ServicesPage() {
   return (
     <PageLayout
-      description="Video editing, motion design, graphic design, and social media creative services by JackNex Creative."
+      description="Video editing and supporting visual services by JackNex Creative."
       title="Services"
     >
       <section className="section-shell pb-16 pt-10 sm:pb-24">
         <div className="max-w-5xl">
           <p className="mono-label text-xs font-bold text-[var(--accent)]">Services</p>
           <h1 className="display-type mt-5 text-6xl text-[var(--text)] sm:text-8xl">
-            Creative production for edits, motion, and visual campaigns.
+            Focused editing for finished videos and release visuals.
           </h1>
         </div>
 

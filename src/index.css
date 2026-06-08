@@ -101,12 +101,12 @@ video {
 }
 
 .section-shell {
-  width: min(calc(100% - 32px), 1180px);
+  width: min(calc(100% - 40px), 1180px);
   margin-inline: auto;
 }
 
 .wide-shell {
-  width: min(calc(100% - 24px), 1440px);
+  width: min(calc(100% - 40px), 1440px);
   margin-inline: auto;
 }
 
@@ -183,6 +183,15 @@ video:fullscreen {
 .media-frame--contain video {
   min-width: 0;
   min-height: 0;
+}
+
+.project-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .grain {

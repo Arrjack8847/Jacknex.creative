@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../components/common/Button'
+import { SocialLinks } from '../components/common/SocialLinks'
 import { PageLayout } from '../components/layout/PageLayout'
+import { contactSocialLinks } from '../data/socialLinks'
 import { siteConfig } from '../data/siteConfig'
 import {
   budgetOptions,
@@ -68,7 +70,7 @@ export function ContactPage() {
 
   return (
     <PageLayout
-      description="Submit a professional project enquiry for video editing, motion design, graphic design, branding, or social media content."
+      description="Submit a project enquiry for video editing, music teasers, event recaps, vertical edits, or supporting visual assets."
       title="Contact"
     >
       <section className="section-shell grid gap-12 pb-16 pt-10 sm:pb-24 lg:grid-cols-[0.85fr_1.15fr]">
@@ -85,24 +87,7 @@ export function ContactPage() {
             <p>
               Email: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.emailHref}>{siteConfig.contact.email}</a>
             </p>
-            <p>
-              Viber: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.viber}>{siteConfig.contact.viberPhone}</a>
-            </p>
-            <p>
-              Telegram: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.telegram} rel="noreferrer" target="_blank">{siteConfig.contact.telegramHandle}</a>
-            </p>
-            <p>
-              Facebook: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.facebook} rel="noreferrer" target="_blank">Soe Min Khant profile</a>
-            </p>
-            <p>
-              Facebook Page: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.facebookPage} rel="noreferrer" target="_blank">JackNex Creative page</a>
-            </p>
-            <p>
-              Instagram: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.instagram} rel="noreferrer" target="_blank">{siteConfig.contact.instagramHandle}</a>
-            </p>
-            <p>
-              LinkedIn: <a className="text-[var(--text)] hover:text-[var(--accent)]" href={siteConfig.contact.linkedin} rel="noreferrer" target="_blank">Soe Min Khant</a>
-            </p>
+            <SocialLinks links={contactSocialLinks} />
           </div>
         </div>
 

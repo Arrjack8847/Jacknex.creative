@@ -27,5 +27,5 @@ export function PageLayout({ title, description, children, className }: PageLayo
     setMeta('meta[name="twitter:description"]', 'content', description)
   }, [description, title])
 
-  return <main className={cn('min-h-screen pt-24', className)}>{children}</main>
+  return <main className={cn('min-h-screen pt-[82px] lg:pt-[84px] xl:pt-[88px]', className)}>{children}</main>
 }

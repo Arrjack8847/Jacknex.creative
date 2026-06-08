@@ -60,79 +60,736 @@ const revealTransition = {
   ease: [0.22, 1, 0.36, 1] as const,
 }
 
+type ResponsiveValue = {
+  mobile: string
+  tablet: string
+  laptop: string
+}
+
 /*
 |--------------------------------------------------------------------------
-| IMAGE POSITION CONTROLS
+| RESPONSIVE CONTROL PANEL
 |--------------------------------------------------------------------------
 |
-| Change these values to reposition your images.
+| Edit the values below to control the homepage without searching through
+| the JSX. Every setting has separate mobile, tablet, and laptop values.
 |
-| Value format:
-| 'horizontal vertical'
+| Breakpoints used:
+| Mobile:  below 640px
+| Tablet:  640px to 1023px
+| Laptop:  1024px and above
 |
-| Horizontal:
-| 0%   = far left
-| 50%  = centre
-| 100% = far right
-|
-| Vertical:
-| 0%   = top
-| 50%  = centre
-| 100% = bottom
+| Useful examples:
+| Width:          '100%', '520px', '72rem'
+| Spacing:        '24px', '4rem'
+| Position:       '65% 50%'
+| Alignment:      'left', 'center', 'right'
+| Grid columns:   '1fr', 'repeat(2, minmax(0, 1fr))'
 |
 */
-
-const mediaPositionControls = {
+const responsiveControls = {
   hero: {
-    mobile: '65% 110%',
-    tablet: '50% 50%',
-    desktop: '50% 50%',
+    minHeight: {
+      mobile: '100svh',
+      tablet: '100svh',
+      laptop: '100svh',
+    },
+    mediaPosition: {
+      mobile: '67% 50%',
+      tablet: '55% 50%',
+      laptop: '50% 50%',
+    },
+    mediaScale: {
+      mobile: '1.01',
+      tablet: '1.015',
+      laptop: '1.02',
+    },
+    contentPaddingTop: {
+      mobile: '7rem',
+      tablet: '8rem',
+      laptop: '7rem',
+    },
+    contentPaddingBottom: {
+      mobile: '2rem',
+      tablet: '3rem',
+      laptop: '4rem',
+    },
+    contentMaxWidth: {
+      mobile: '100%',
+      tablet: '48rem',
+      laptop: '72rem',
+    },
+    contentAlignment: {
+      mobile: 'left',
+      tablet: 'left',
+      laptop: 'left',
+    },
+    labelMarginBottom: {
+      mobile: '1.25rem',
+      tablet: '1.5rem',
+      laptop: '1.75rem',
+    },
+    titleSize: {
+      mobile: 'clamp(3.35rem, 17vw, 5rem)',
+      tablet: 'clamp(5.5rem, 12vw, 7.5rem)',
+      laptop: 'clamp(7rem, 10vw, 9.5rem)',
+    },
+    titleLineHeight: {
+      mobile: '0.86',
+      tablet: '0.84',
+      laptop: '0.82',
+    },
+    titleLetterSpacing: {
+      mobile: '-0.045em',
+      tablet: '-0.05em',
+      laptop: '-0.055em',
+    },
+    detailsMarginTop: {
+      mobile: '2rem',
+      tablet: '2.25rem',
+      laptop: '2.5rem',
+    },
+    detailsGap: {
+      mobile: '1.5rem',
+      tablet: '1.75rem',
+      laptop: '2rem',
+    },
+    descriptionSize: {
+      mobile: '0.95rem',
+      tablet: '1.05rem',
+      laptop: '1.125rem',
+    },
+    descriptionLineHeight: {
+      mobile: '1.65',
+      tablet: '1.7',
+      laptop: '1.75',
+    },
+    actionsDirection: {
+      mobile: 'column',
+      tablet: 'row',
+      laptop: 'row',
+    },
+    actionsWidth: {
+      mobile: '100%',
+      tablet: 'auto',
+      laptop: 'auto',
+    },
+    footerMarginTop: {
+      mobile: '2.5rem',
+      tablet: '4rem',
+      laptop: '5rem',
+    },
+  },
+
+  statement: {
+    paddingTop: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '8rem',
+    },
+    paddingBottom: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '9rem',
+    },
+    textSize: {
+      mobile: '2.15rem',
+      tablet: '3.2rem',
+      laptop: '4.5rem',
+    },
+    lineHeight: {
+      mobile: '1.08',
+      tablet: '1.06',
+      laptop: '1.05',
+    },
+    maxWidth: {
+      mobile: '100%',
+      tablet: '56rem',
+      laptop: '72rem',
+    },
+  },
+
+  featuredWork: {
+    paddingTop: {
+      mobile: '3.5rem',
+      tablet: '5rem',
+      laptop: '6rem',
+    },
+    paddingBottom: {
+      mobile: '3.5rem',
+      tablet: '5rem',
+      laptop: '6rem',
+    },
+    headerGap: {
+      mobile: '1.5rem',
+      tablet: '2rem',
+      laptop: '2rem',
+    },
+    gridColumns: {
+      mobile: '1fr',
+      tablet: 'repeat(2, minmax(0, 1fr))',
+      laptop: 'repeat(2, minmax(0, 1fr))',
+    },
+    gridGap: {
+      mobile: '1rem',
+      tablet: '1.25rem',
+      laptop: '1.5rem',
+    },
+  },
+
+  showreel: {
+    paddingTop: {
+      mobile: '3.5rem',
+      tablet: '5rem',
+      laptop: '6rem',
+    },
+    paddingBottom: {
+      mobile: '3.5rem',
+      tablet: '5rem',
+      laptop: '6rem',
+    },
+    headerPaddingY: {
+      mobile: '1.5rem',
+      tablet: '2rem',
+      laptop: '2.5rem',
+    },
+    headerGap: {
+      mobile: '1.5rem',
+      tablet: '2rem',
+      laptop: '2rem',
+    },
+    playerPadding: {
+      mobile: '0.35rem',
+      tablet: '0.6rem',
+      laptop: '0.75rem',
+    },
+    playerMaxWidth: {
+      mobile: 'min(100%, 390px)',
+      tablet: '480px',
+      laptop: '520px',
+    },
+    playerMaxHeight: {
+      mobile: '74svh',
+      tablet: '76vh',
+      laptop: '78vh',
+    },
+  },
+
+  disciplines: {
+    paddingTop: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '7rem',
+    },
+    paddingBottom: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '7rem',
+    },
+    gridColumns: {
+      mobile: '1fr',
+      tablet: '1fr',
+      laptop: 'repeat(2, minmax(0, 1fr))',
+    },
+    gridGap: {
+      mobile: '1rem',
+      tablet: '1.25rem',
+      laptop: '1.5rem',
+    },
+    cardPadding: {
+      mobile: '1.35rem',
+      tablet: '2rem',
+      laptop: '2.25rem',
+    },
+    titleSize: {
+      mobile: '3.5rem',
+      tablet: '4.25rem',
+      laptop: '4.75rem',
+    },
+    listColumns: {
+      mobile: '1fr',
+      tablet: 'repeat(2, minmax(0, 1fr))',
+      laptop: 'repeat(2, minmax(0, 1fr))',
+    },
   },
 
   about: {
-    mobile: '50% 25%',
-    tablet: '50% 50%',
-    desktop: '50% 50%',
+    paddingTop: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '7rem',
+    },
+    paddingBottom: {
+      mobile: '4.5rem',
+      tablet: '6rem',
+      laptop: '7rem',
+    },
+    gridColumns: {
+      mobile: '1fr',
+      tablet: '1fr',
+      laptop: '0.92fr 1.08fr',
+    },
+    gridGap: {
+      mobile: '2.5rem',
+      tablet: '3.5rem',
+      laptop: '4rem',
+    },
+    imageMaxWidth: {
+      mobile: '34rem',
+      tablet: '38rem',
+      laptop: 'none',
+    },
+    imageAspectRatio: {
+      mobile: '4 / 5',
+      tablet: '4 / 5',
+      laptop: '3 / 4',
+    },
+    imagePosition: {
+      mobile: '50% 25%',
+      tablet: '50% 32%',
+      laptop: '50% 50%',
+    },
+    titleSize: {
+      mobile: '3rem',
+      tablet: '3.75rem',
+      laptop: '4.5rem',
+    },
+    bodySize: {
+      mobile: '1rem',
+      tablet: '1.125rem',
+      laptop: '1.25rem',
+    },
+    bodyLineHeight: {
+      mobile: '1.7',
+      tablet: '1.75',
+      laptop: '1.8',
+    },
+    infoColumns: {
+      mobile: '1fr',
+      tablet: 'repeat(2, minmax(0, 1fr))',
+      laptop: 'repeat(2, minmax(0, 1fr))',
+    },
   },
-} as const
+} satisfies Record<string, Record<string, ResponsiveValue>>
 
-/*
-|--------------------------------------------------------------------------
-| RESPONSIVE IMAGE POSITION STYLES
-|--------------------------------------------------------------------------
-|
-| Mobile: below 640px
-| Tablet: 640px and above
-| Desktop: 1024px and above
-|
-*/
-
-const mediaPositionStyles = `
-  .home-hero-media {
-    object-position: ${mediaPositionControls.hero.mobile};
-  }
-
-  .home-about-image {
-    object-position: ${mediaPositionControls.about.mobile};
+const createResponsiveRule = (
+  selector: string,
+  property: string,
+  values: ResponsiveValue,
+) => `
+  ${selector} {
+    ${property}: ${values.mobile};
   }
 
   @media (min-width: 640px) {
-    .home-hero-media {
-      object-position: ${mediaPositionControls.hero.tablet};
-    }
-
-    .home-about-image {
-      object-position: ${mediaPositionControls.about.tablet};
+    ${selector} {
+      ${property}: ${values.tablet};
     }
   }
 
   @media (min-width: 1024px) {
-    .home-hero-media {
-      object-position: ${mediaPositionControls.hero.desktop};
+    ${selector} {
+      ${property}: ${values.laptop};
+    }
+  }
+`
+
+const responsiveStyles = `
+  ${createResponsiveRule(
+    '.home-hero',
+    'min-height',
+    responsiveControls.hero.minHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-media',
+    'object-position',
+    responsiveControls.hero.mediaPosition,
+  )}
+
+  ${createResponsiveRule('.home-hero-media', 'transform', {
+    mobile: `scale(${responsiveControls.hero.mediaScale.mobile})`,
+    tablet: `scale(${responsiveControls.hero.mediaScale.tablet})`,
+    laptop: `scale(${responsiveControls.hero.mediaScale.laptop})`,
+  })}
+
+  ${createResponsiveRule(
+    '.home-hero-shell',
+    'padding-top',
+    responsiveControls.hero.contentPaddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-shell',
+    'padding-bottom',
+    responsiveControls.hero.contentPaddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-content',
+    'max-width',
+    responsiveControls.hero.contentMaxWidth,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-content',
+    'text-align',
+    responsiveControls.hero.contentAlignment,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-label',
+    'margin-bottom',
+    responsiveControls.hero.labelMarginBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-title',
+    'font-size',
+    responsiveControls.hero.titleSize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-title',
+    'line-height',
+    responsiveControls.hero.titleLineHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-title',
+    'letter-spacing',
+    responsiveControls.hero.titleLetterSpacing,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-details',
+    'margin-top',
+    responsiveControls.hero.detailsMarginTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-details',
+    'gap',
+    responsiveControls.hero.detailsGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-description',
+    'font-size',
+    responsiveControls.hero.descriptionSize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-description',
+    'line-height',
+    responsiveControls.hero.descriptionLineHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-actions',
+    'flex-direction',
+    responsiveControls.hero.actionsDirection,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-actions',
+    'width',
+    responsiveControls.hero.actionsWidth,
+  )}
+
+  ${createResponsiveRule(
+    '.home-hero-footer',
+    'margin-top',
+    responsiveControls.hero.footerMarginTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-statement',
+    'padding-top',
+    responsiveControls.statement.paddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-statement',
+    'padding-bottom',
+    responsiveControls.statement.paddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-statement-copy',
+    'font-size',
+    responsiveControls.statement.textSize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-statement-copy',
+    'line-height',
+    responsiveControls.statement.lineHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-statement-copy',
+    'max-width',
+    responsiveControls.statement.maxWidth,
+  )}
+
+  ${createResponsiveRule(
+    '.home-featured',
+    'padding-top',
+    responsiveControls.featuredWork.paddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-featured',
+    'padding-bottom',
+    responsiveControls.featuredWork.paddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-featured-header',
+    'gap',
+    responsiveControls.featuredWork.headerGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-project-grid',
+    'grid-template-columns',
+    responsiveControls.featuredWork.gridColumns,
+  )}
+
+  ${createResponsiveRule(
+    '.home-project-grid',
+    'gap',
+    responsiveControls.featuredWork.gridGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel',
+    'padding-top',
+    responsiveControls.showreel.paddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel',
+    'padding-bottom',
+    responsiveControls.showreel.paddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-header',
+    'padding-top',
+    responsiveControls.showreel.headerPaddingY,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-header',
+    'padding-bottom',
+    responsiveControls.showreel.headerPaddingY,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-header',
+    'gap',
+    responsiveControls.showreel.headerGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-player-wrap',
+    'padding',
+    responsiveControls.showreel.playerPadding,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-player',
+    'max-width',
+    responsiveControls.showreel.playerMaxWidth,
+  )}
+
+  ${createResponsiveRule(
+    '.home-showreel-player',
+    'max-height',
+    responsiveControls.showreel.playerMaxHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-disciplines',
+    'padding-top',
+    responsiveControls.disciplines.paddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-disciplines',
+    'padding-bottom',
+    responsiveControls.disciplines.paddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-discipline-grid',
+    'grid-template-columns',
+    responsiveControls.disciplines.gridColumns,
+  )}
+
+  ${createResponsiveRule(
+    '.home-discipline-grid',
+    'gap',
+    responsiveControls.disciplines.gridGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-discipline-card',
+    'padding',
+    responsiveControls.disciplines.cardPadding,
+  )}
+
+  ${createResponsiveRule(
+    '.home-discipline-title',
+    'font-size',
+    responsiveControls.disciplines.titleSize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-discipline-list',
+    'grid-template-columns',
+    responsiveControls.disciplines.listColumns,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about',
+    'padding-top',
+    responsiveControls.about.paddingTop,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about',
+    'padding-bottom',
+    responsiveControls.about.paddingBottom,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-grid',
+    'grid-template-columns',
+    responsiveControls.about.gridColumns,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-grid',
+    'gap',
+    responsiveControls.about.gridGap,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-media',
+    'max-width',
+    responsiveControls.about.imageMaxWidth,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-image',
+    'aspect-ratio',
+    responsiveControls.about.imageAspectRatio,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-image',
+    'object-position',
+    responsiveControls.about.imagePosition,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-title',
+    'font-size',
+    responsiveControls.about.titleSize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-copy',
+    'font-size',
+    responsiveControls.about.bodySize,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-copy',
+    'line-height',
+    responsiveControls.about.bodyLineHeight,
+  )}
+
+  ${createResponsiveRule(
+    '.home-about-info',
+    'grid-template-columns',
+    responsiveControls.about.infoColumns,
+  )}
+
+  .home-hero-media {
+    will-change: transform;
+  }
+
+  .home-hero-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
+
+  .home-hero-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .home-hero-actions > * {
+    width: 100%;
+  }
+
+  .home-featured-header,
+  .home-showreel-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-project-grid,
+  .home-discipline-grid,
+  .home-discipline-list,
+  .home-about-grid,
+  .home-about-info {
+    display: grid;
+  }
+
+  .home-showreel-player {
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .home-about-media {
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .home-about-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 640px) {
+    .home-featured-header,
+    .home-showreel-header {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
     }
 
-    .home-about-image {
-      object-position: ${mediaPositionControls.about.desktop};
+    .home-hero-actions > * {
+      width: auto;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .home-hero-details {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-about-grid {
+      align-items: center;
     }
   }
 `
@@ -164,17 +821,16 @@ export function HomePage() {
       description={siteConfig.seoDescription}
       title={siteConfig.seoTitle}
     >
-      {/* Responsive media-position CSS */}
-      <style>{mediaPositionStyles}</style>
+      <style>{responsiveStyles}</style>
 
       {/* Hero */}
-      <section className="noise-surface relative flex min-h-[100svh] items-end overflow-hidden bg-black">
+      <section className="home-hero relative flex items-end overflow-hidden bg-black">
         <div className="absolute inset-0">
           {siteConfig.media.heroVideo && !prefersReducedMotion ? (
             <video
               aria-hidden="true"
               autoPlay
-              className="home-hero-media h-full w-full scale-[1.02] object-cover"
+              className="home-hero-media h-full w-full object-cover"
               loop
               muted
               playsInline
@@ -185,34 +841,25 @@ export function HomePage() {
           ) : (
             <img
               alt={siteConfig.media.heroPoster.alt}
-              className="home-hero-media h-full w-full scale-[1.02] object-cover"
+              className="home-hero-media h-full w-full object-cover"
               fetchPriority="high"
               src={siteConfig.media.heroPoster.src}
             />
           )}
 
-          {/* Cinematic overlays */}
-          <div className="absolute inset-0 bg-black/25" />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10" />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-black/20 to-black/40" />
-
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,transparent_0%,rgba(0,0,0,0.12)_35%,rgba(0,0,0,0.78)_100%)]" />
-
-          {/* Accent glow */}
-          <div className="absolute -left-32 top-1/3 h-96 w-96 rounded-full bg-[var(--accent)]/10 blur-[120px]" />
-
-          <div className="grain opacity-60" />
+          {/* Clean cinematic overlays — no sparkles or glow effects */}
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-linear-to-r from-black via-black/65 to-black/15" />
+          <div className="absolute inset-0 bg-linear-to-t from-(--bg) via-black/15 to-black/35" />
         </div>
 
-        <div className="section-shell relative z-10 w-full pb-12 pt-24 sm:pb-16 sm:pt-28 lg:pb-20 lg:pt-20">
+        <div className="home-hero-shell section-shell relative z-10 w-full">
           <motion.div
             animate={{
               opacity: 1,
               y: 0,
             }}
-            className="max-w-6xl"
+            className="home-hero-content"
             initial={
               prefersReducedMotion
                 ? false
@@ -223,19 +870,18 @@ export function HomePage() {
             }
             transition={revealTransition}
           >
-            <div className="mb-7 flex flex-wrap items-center gap-3">
-              <span className="mono-label inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/55">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.8)]" />
-
+            <div className="home-hero-label flex flex-wrap items-center gap-3">
+              <span className="mono-label inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/60">
+                <span className="h-px w-5 bg-(--accent)" />
                 Available for selected projects
               </span>
             </div>
 
-            <h1 className="display-type max-w-5xl text-[clamp(4rem,11vw,9.5rem)] leading-[0.82] tracking-[-0.055em] text-white">
+            <h1 className="home-hero-title display-type text-white">
               I EDIT
               <br />
 
-              <span className="relative inline-block text-[var(--accent)]">
+              <span className="text-(--accent)">
                 STORIES.
               </span>
 
@@ -246,12 +892,12 @@ export function HomePage() {
               </span>
             </h1>
 
-            <div className="mt-9 grid max-w-5xl gap-8 border-t border-white/15 pt-7 md:grid-cols-[1fr_auto] md:items-end">
-              <p className="max-w-2xl text-base leading-7 text-white/65 sm:text-lg sm:leading-8">
+            <div className="home-hero-details max-w-5xl border-t border-white/15 pt-6 sm:pt-7">
+              <p className="home-hero-description max-w-2xl text-white/70">
                 {siteConfig.description}
               </p>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="home-hero-actions">
                 <Button to="/work">
                   Explore My Work
                 </Button>
@@ -266,7 +912,7 @@ export function HomePage() {
             </div>
           </motion.div>
 
-          <div className="mt-16 flex items-end justify-between sm:mt-20">
+          <div className="home-hero-footer flex items-end justify-between gap-6">
             <div className="hidden items-center gap-3 text-white/50 sm:flex">
               <ArrowDown size={15} />
 
@@ -275,7 +921,7 @@ export function HomePage() {
               </span>
             </div>
 
-            <div className="mono-label ml-auto text-right text-[10px] uppercase leading-5 tracking-[0.18em] text-white/45">
+            <div className="mono-label ml-auto text-right text-[10px] uppercase leading-5 tracking-[0.18em] text-white/50">
               Based in Malaysia
               <br />
               Working worldwide
@@ -285,7 +931,7 @@ export function HomePage() {
       </section>
 
       {/* Creative statement */}
-      <section className="section-shell py-20 sm:py-28 lg:py-36">
+      <section className="home-statement section-shell">
         <motion.div
           initial={revealInitial}
           transition={revealTransition}
@@ -295,18 +941,18 @@ export function HomePage() {
           }}
           whileInView={revealInView}
         >
-          <div className="mb-10 flex items-center gap-4">
-            <span className="mono-label text-[10px] uppercase tracking-[0.22em] text-[var(--accent)]">
+          <div className="mb-8 flex items-center gap-4 sm:mb-10">
+            <span className="mono-label text-[10px] uppercase tracking-[0.22em] text-(--accent)">
               Creative direction
             </span>
 
-            <span className="h-px flex-1 bg-[var(--line)]" />
+            <span className="h-px flex-1 bg-(--line)" />
           </div>
 
-          <p className="max-w-6xl text-4xl font-medium leading-[1.05] tracking-[-0.035em] text-[var(--text)] sm:text-5xl lg:text-7xl">
+          <p className="home-statement-copy font-medium tracking-[-0.035em] text-(--text)">
             I turn raw footage and simple ideas into{' '}
 
-            <span className="text-[var(--muted)]">
+            <span className="text-(--muted)">
               visual experiences that attract attention,
             </span>{' '}
 
@@ -316,24 +962,26 @@ export function HomePage() {
       </section>
 
       {/* Featured work */}
-      <section className="section-shell py-16 sm:py-24">
-        <div className="mb-12 flex flex-col gap-7 border-b border-[var(--line)] pb-8 sm:flex-row sm:items-end sm:justify-between">
+      <section className="home-featured section-shell">
+        <div className="home-featured-header mb-10 border-b border-(--line) pb-7 sm:mb-12 sm:pb-8">
           <SectionHeading
             label="Selected projects"
             number="01"
             title="Stories, campaigns, and motion crafted with intention."
           />
 
-          <Button
-            to="/work"
-            variant="ghost"
-          >
-            View All Work
-          </Button>
+          <div className="shrink-0">
+            <Button
+              to="/work"
+              variant="ghost"
+            >
+              View All Work
+            </Button>
+          </div>
         </div>
 
         {featuredProjects.length > 0 ? (
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="home-project-grid">
             {featuredProjects.map((project, index) => (
               <motion.div
                 initial={revealInitial}
@@ -361,8 +1009,8 @@ export function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="border border-[var(--line)] px-6 py-16 text-center">
-            <p className="text-[var(--muted)]">
+          <div className="border border-(--line) px-5 py-14 text-center sm:px-6 sm:py-16">
+            <p className="text-(--muted)">
               Featured projects will be added soon.
             </p>
           </div>
@@ -370,9 +1018,9 @@ export function HomePage() {
       </section>
 
       {/* Showreel */}
-      <section className="wide-shell py-16 sm:py-24">
+      <section className="home-showreel wide-shell">
         <motion.div
-          className="overflow-hidden border border-[var(--line)] bg-[var(--surface)]"
+          className="overflow-hidden border border-(--line) bg-(--surface)"
           initial={revealInitial}
           transition={revealTransition}
           viewport={{
@@ -381,7 +1029,7 @@ export function HomePage() {
           }}
           whileInView={revealInView}
         >
-          <div className="section-shell flex flex-col gap-8 border-b border-[var(--line)] py-8 sm:flex-row sm:items-end sm:justify-between sm:py-10">
+          <div className="home-showreel-header section-shell border-b border-(--line)">
             <SectionHeading
               copy="A vertical music teaser showing mobile-first pacing, rhythm, sound timing, and concise motion direction."
               label="Selected motion"
@@ -389,16 +1037,15 @@ export function HomePage() {
               title="Music Teaser"
             />
 
-            <div className="mono-label flex shrink-0 items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+            <div className="mono-label flex shrink-0 items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-(--muted)">
               <Headphones size={15} />
-
               Headphones recommended
             </div>
           </div>
 
-          <div className="relative bg-black p-2 sm:p-3">
+          <div className="home-showreel-player-wrap bg-black">
             <VideoPlayer
-              className="mx-auto max-h-[78vh] max-w-[520px]"
+              className="home-showreel-player"
               duration={siteConfig.media.showreel.duration}
               height={siteConfig.media.showreel.height}
               orientation={siteConfig.media.showreel.orientation}
@@ -418,7 +1065,7 @@ export function HomePage() {
       </section>
 
       {/* Disciplines */}
-      <section className="section-shell py-20 sm:py-28">
+      <section className="home-disciplines section-shell">
         <SectionHeading
           copy="One connected visual approach for projects that need atmosphere, rhythm, clarity, and a recognisable identity."
           label="Creative disciplines"
@@ -426,10 +1073,10 @@ export function HomePage() {
           title="Motion and design, built to work together."
         />
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+        <div className="home-discipline-grid mt-10 sm:mt-12">
           {disciplineGroups.map((discipline, index) => (
             <motion.article
-              className="group relative overflow-hidden border border-[var(--line)] bg-[var(--surface)] p-6 transition-colors duration-500 hover:border-[var(--accent)]/45 sm:p-9"
+              className="home-discipline-card group relative overflow-hidden border border-(--line) bg-(--surface) transition-colors duration-300 hover:border-(--accent)/45"
               initial={revealInitial}
               key={discipline.title}
               transition={{
@@ -442,55 +1089,51 @@ export function HomePage() {
               }}
               whileInView={revealInView}
             >
-              <div className="absolute right-0 top-0 h-44 w-44 translate-x-1/3 -translate-y-1/3 rounded-full bg-[var(--accent)]/0 blur-3xl transition-colors duration-500 group-hover:bg-[var(--accent)]/10" />
+              <div className="flex items-center justify-between border-b border-(--line) pb-5 sm:pb-6">
+                <span className="mono-label text-[10px] uppercase tracking-[0.2em] text-(--accent)">
+                  {discipline.number}
+                </span>
 
-              <div className="relative">
-                <div className="flex items-center justify-between border-b border-[var(--line)] pb-6">
-                  <span className="mono-label text-[10px] uppercase tracking-[0.2em] text-[var(--accent)]">
-                    {discipline.number}
-                  </span>
-
-                  <ArrowUpRight
-                    className="text-[var(--muted)] transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[var(--accent)]"
-                    size={19}
-                  />
-                </div>
-
-                <p className="mono-label mt-8 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
-                  {discipline.label}
-                </p>
-
-                <h3 className="display-type mt-3 text-6xl leading-none text-[var(--text)] sm:text-7xl">
-                  {discipline.title}
-                </h3>
-
-                <p className="mt-5 max-w-lg text-base leading-7 text-[var(--muted)]">
-                  {discipline.copy}
-                </p>
-
-                <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                  {discipline.items.map((item) => (
-                    <li
-                      className="flex items-center gap-3 text-sm text-[var(--text)] sm:text-base"
-                      key={item}
-                    >
-                      <span className="h-px w-6 bg-[var(--accent)] transition-all duration-300 group-hover:w-9" />
-
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <ArrowUpRight
+                  className="text-(--muted) transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-(--accent)"
+                  size={19}
+                />
               </div>
+
+              <p className="mono-label mt-7 text-[10px] uppercase tracking-[0.18em] text-(--muted) sm:mt-8">
+                {discipline.label}
+              </p>
+
+              <h3 className="home-discipline-title display-type mt-3 leading-none text-(--text)">
+                {discipline.title}
+              </h3>
+
+              <p className="mt-5 max-w-lg text-sm leading-7 text-(--muted) sm:text-base">
+                {discipline.copy}
+              </p>
+
+              <ul className="home-discipline-list mt-8 gap-x-8 gap-y-4 sm:mt-10">
+                {discipline.items.map((item) => (
+                  <li
+                    className="flex items-center gap-3 text-sm text-(--text) sm:text-base"
+                    key={item}
+                  >
+                    <span className="h-px w-6 shrink-0 bg-(--accent) transition-[width] duration-300 group-hover:w-8" />
+
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </motion.article>
           ))}
         </div>
       </section>
 
       {/* About */}
-      <section className="section-shell py-20 sm:py-28">
-        <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center xl:gap-16">
+      <section className="home-about section-shell">
+        <div className="home-about-grid">
           <motion.div
-            className="relative"
+            className="home-about-media relative"
             initial={
               prefersReducedMotion
                 ? false
@@ -513,19 +1156,19 @@ export function HomePage() {
                   }
             }
           >
-            <div className="relative overflow-hidden rounded-[6px] border border-[var(--line-strong)] bg-[var(--surface)] shadow-[0_24px_90px_rgba(0,0,0,0.42),0_0_0_1px_rgba(215,140,45,0.08)]">
+            <div className="relative overflow-hidden rounded-md border border-(--line-strong) bg-(--surface) shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
               <img
                 alt={siteConfig.media.aboutWorkspace.alt}
-                className="home-about-image aspect-[3/4] h-full w-full object-cover transition-transform duration-700 hover:scale-[1.025]"
+                className="home-about-image object-cover transition-transform duration-700 hover:scale-[1.02]"
                 loading="lazy"
                 src={siteConfig.media.aboutWorkspace.src}
               />
 
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/5 to-transparent" />
 
               <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/5" />
 
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
+              <div className="absolute bottom-4 left-4 right-4 flex flex-col items-start justify-between gap-4 sm:bottom-6 sm:left-6 sm:right-6 sm:flex-row sm:items-end">
                 <div>
                   <p className="mono-label text-[10px] uppercase tracking-[0.2em] text-white/55">
                     Creative based in
@@ -533,12 +1176,11 @@ export function HomePage() {
 
                   <p className="mt-2 flex items-center gap-2 text-sm text-white">
                     <MapPin size={15} />
-
                     Malaysia
                   </p>
                 </div>
 
-                <span className="mono-label border border-white/20 bg-black/30 px-3 py-2 text-[9px] uppercase tracking-[0.17em] text-white/70 backdrop-blur-md">
+                <span className="mono-label border border-white/20 bg-black/40 px-3 py-2 text-[9px] uppercase tracking-[0.17em] text-white/75 backdrop-blur-md">
                   JackNex Creative
                 </span>
               </div>
@@ -560,46 +1202,46 @@ export function HomePage() {
               number="04"
             />
 
-            <h2 className="display-type mt-5 max-w-3xl text-5xl text-[var(--text)] sm:text-6xl lg:text-7xl">
+            <h2 className="home-about-title display-type mt-5 max-w-3xl leading-[0.98] text-(--text)">
               Creative work shaped by story, motion and design.
             </h2>
 
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-[var(--muted)] sm:text-xl sm:leading-9">
+            <p className="home-about-copy mt-6 max-w-2xl text-(--muted) sm:mt-8">
               I&apos;m Jack, a video editor and graphic designer focused on
               music videos, event films, promotional content, and expressive
               digital visuals.
             </p>
 
-            <div className="mt-8 grid gap-4 border-y border-[var(--line)] py-6 text-sm sm:grid-cols-2">
+            <div className="home-about-info mt-7 gap-5 border-y border-(--line) py-6 text-sm sm:mt-8">
               <div>
-                <p className="mono-label text-[10px] uppercase tracking-[0.18em] text-[var(--subtle)]">
+                <p className="mono-label text-[10px] uppercase tracking-[0.18em] text-(--subtle)">
                   Role
                 </p>
 
-                <p className="mt-2 text-[var(--text)]">
-                  Video Editor & Graphic Designer
+                <p className="mt-2 text-(--text)">
+                  Video Editor &amp; Graphic Designer
                 </p>
               </div>
 
               <div>
-                <p className="mono-label text-[10px] uppercase tracking-[0.18em] text-[var(--subtle)]">
+                <p className="mono-label text-[10px] uppercase tracking-[0.18em] text-(--subtle)">
                   Location
                 </p>
 
-                <p className="mt-2 text-[var(--text)]">
+                <p className="mt-2 text-(--text)">
                   Based in Malaysia
                 </p>
               </div>
             </div>
 
             <SocialLinks
-              className="mt-8"
+              className="mt-7 sm:mt-8"
               iconSize={19}
               linkClassName="h-[46px] w-[46px]"
               links={aboutSocialLinks}
             />
 
-            <div className="mt-10">
+            <div className="mt-8 sm:mt-10">
               <Button
                 to="/about"
                 variant="secondary"
