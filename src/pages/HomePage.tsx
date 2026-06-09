@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowDown,
@@ -16,6 +17,7 @@ import { ProjectCard } from '../components/work/ProjectCard'
 import { projects } from '../data/projects'
 import { aboutSocialLinks } from '../data/socialLinks'
 import { siteConfig } from '../data/siteConfig'
+import { useHomeHeroAnimation } from '../hooks/useHomeHeroAnimation'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const motionDisciplines = [
@@ -407,11 +409,7 @@ const responsiveStyles = `
     responsiveControls.hero.mediaPosition,
   )}
 
-  ${createResponsiveRule('.home-hero-media', 'transform', {
-    mobile: `scale(${responsiveControls.hero.mediaScale.mobile})`,
-    tablet: `scale(${responsiveControls.hero.mediaScale.tablet})`,
-    laptop: `scale(${responsiveControls.hero.mediaScale.laptop})`,
-  })}
+  ${createResponsiveRule('.home-hero-media', '--hero-media-scale', responsiveControls.hero.mediaScale)}
 
   ${createResponsiveRule(
     '.home-hero-shell',
@@ -720,6 +718,7 @@ const responsiveStyles = `
   )}
 
   .home-hero-media {
+    transform: scale(var(--hero-media-scale, 1));
     will-change: transform;
   }
 
@@ -796,6 +795,9 @@ const responsiveStyles = `
 
 export function HomePage() {
   const prefersReducedMotion = usePrefersReducedMotion()
+  const heroRef = useRef<HTMLElement>(null)
+
+  useHomeHeroAnimation(heroRef)
 
   const featuredProjects = projects
     .filter((project) => project.featured)
@@ -824,7 +826,7 @@ export function HomePage() {
       <style>{responsiveStyles}</style>
 
       {/* Hero */}
-      <section className="home-hero relative flex items-end overflow-hidden bg-black">
+      <section className="home-hero relative flex items-end overflow-hidden bg-black" ref={heroRef}>
         <div className="absolute inset-0">
           {siteConfig.media.heroVideo && !prefersReducedMotion ? (
             <video
@@ -854,22 +856,7 @@ export function HomePage() {
         </div>
 
         <div className="home-hero-shell section-shell relative z-10 w-full">
-          <motion.div
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            className="home-hero-content"
-            initial={
-              prefersReducedMotion
-                ? false
-                : {
-                    opacity: 0,
-                    y: 30,
-                  }
-            }
-            transition={revealTransition}
-          >
+          <div className="home-hero-content">
             <div className="home-hero-label flex flex-wrap items-center gap-3">
               <span className="mono-label inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/60">
                 <span className="h-px w-5 bg-(--accent)" />
@@ -878,16 +865,15 @@ export function HomePage() {
             </div>
 
             <h1 className="home-hero-title display-type text-white">
-              I EDIT
-              <br />
+              <span className="block" data-hero-line>
+                I EDIT
+              </span>
 
-              <span className="text-(--accent)">
+              <span className="block text-(--accent)" data-hero-line>
                 STORIES.
               </span>
 
-              <br />
-
-              <span className="text-white/95">
+              <span className="block text-white/95" data-hero-line>
                 I DESIGN IMPACT.
               </span>
             </h1>
@@ -910,7 +896,7 @@ export function HomePage() {
                 </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           <div className="home-hero-footer flex items-end justify-between gap-6">
             <div className="hidden items-center gap-3 text-white/50 sm:flex">

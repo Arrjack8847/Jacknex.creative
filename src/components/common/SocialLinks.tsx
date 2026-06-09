@@ -41,7 +41,7 @@ export function SocialLinks({
           <a
             aria-label={link.ariaLabel ?? link.label}
             className={cn(
-              'grid h-11 w-11 place-items-center rounded-[4px] border border-[var(--line)] text-[var(--muted)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]',
+              'social-link-premium grid h-11 w-11 place-items-center rounded-[4px] border border-[var(--line)] text-[var(--muted)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]',
               linkClassName,
             )}
             href={link.href}

@@ -50,7 +50,7 @@ export function Button({
     </>
   )
   const classes = cn(
-    'mono-label inline-flex min-h-12 items-center justify-center gap-3 rounded-[4px] border px-5 py-3 text-xs font-bold transition duration-200',
+    'premium-button mono-label inline-flex min-h-12 items-center justify-center gap-3 rounded-[4px] border px-5 py-3 text-xs font-bold transition duration-200',
     'disabled:opacity-55 disabled:hover:border-[var(--line-strong)] disabled:hover:text-[var(--muted)]',
     variantClasses[variant],
     className,

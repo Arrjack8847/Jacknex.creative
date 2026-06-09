@@ -388,17 +388,22 @@ export function VideoPlayer({
     playAttemptInFlightRef.current = false
 
     clearTimers()
-    setShowLoader(false)
-    setHasStartedPlayback(false)
 
-    setStatus(
-      validVideoSrc ? 'idle' : 'error',
-    )
+    const resetFrame = window.requestAnimationFrame(() => {
+      setShowLoader(false)
+      setHasStartedPlayback(false)
+
+      setStatus(
+        validVideoSrc ? 'idle' : 'error',
+      )
+    })
 
     const video = videoRef.current
 
     if (!video) {
-      return
+      return () => {
+        window.cancelAnimationFrame(resetFrame)
+      }
     }
 
     video.pause()
@@ -412,6 +417,10 @@ export function VideoPlayer({
       } catch {
         // Ignore source-change seeking errors.
       }
+    }
+
+    return () => {
+      window.cancelAnimationFrame(resetFrame)
     }
   }, [clearTimers, validVideoSrc])
 
@@ -467,7 +476,7 @@ export function VideoPlayer({
     <div
       aria-busy={status === 'loading'}
       className={cn(
-        'media-frame media-frame--contain',
+        'cinematic-video-frame media-frame media-frame--contain',
         'relative isolate w-full overflow-hidden bg-black',
         className,
       )}

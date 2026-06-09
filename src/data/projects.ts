@@ -1,14 +1,23 @@
 import mainHero from '../assets/projects/jacknex-identity/main-hero.jpg'
+
 import phunkLoveCover from '../assets/projects/phunk-love/cover.jpg'
 import phunkLoveVideo from '../assets/projects/phunk-love/main-video.mp4'
+import phunkLovePreview from '../assets/projects/phunk-love/preview.mp4'
+
 import sickOfWaitingGraphicOne from '../assets/projects/sick-of-waiting/graphic-01.jpg'
 import sickOfWaitingGraphicTwo from '../assets/projects/sick-of-waiting/graphic-02.jpg'
 import sickOfWaitingVideo from '../assets/projects/sick-of-waiting/main-video.mp4'
+import sickOfWaitingPreview from '../assets/projects/sick-of-waiting/preview.mp4'
 import sickOfWaitingVideoCover from '../assets/projects/sick-of-waiting/video-cover.jpg'
+
 import sunwayOrientationCover from '../assets/projects/sunway-college-orientation/cover.jpg'
 import sunwayOrientationVideo from '../assets/projects/sunway-college-orientation/main-video.mp4'
+import sunwayOrientationPreview from '../assets/projects/sunway-college-orientation/preview.mp4'
+
 import tidesCover from '../assets/projects/tides-mv-teaser/cover.jpg'
 import tidesMvTeaserVideo from '../assets/projects/tides-mv-teaser/main-video.mp4'
+import tidesPreview from '../assets/projects/tides-mv-teaser/preview.mp4'
+
 import type { Project, ProjectCategory, ProjectMedia } from '../types/project'
 
 export const categoryLabels: Record<ProjectCategory, string> = {
@@ -39,6 +48,7 @@ const media = {
     orientation: 'portrait',
     order: 1,
   },
+
   phunkLoveCover: {
     id: 'phunk-love-cover',
     type: 'image',
@@ -50,6 +60,7 @@ const media = {
     orientation: 'portrait',
     order: 1,
   },
+
   phunkLoveVideo: {
     id: 'phunk-love-main-video',
     type: 'video',
@@ -63,6 +74,7 @@ const media = {
     duration: '00:29',
     order: 2,
   },
+
   sickOfWaitingCover: {
     id: 'sick-of-waiting-video-cover',
     type: 'image',
@@ -74,6 +86,7 @@ const media = {
     orientation: 'landscape',
     order: 1,
   },
+
   sickOfWaitingVideo: {
     id: 'sick-of-waiting-main-video',
     type: 'video',
@@ -87,6 +100,7 @@ const media = {
     duration: '00:38',
     order: 2,
   },
+
   sickOfWaitingGraphicOne: {
     id: 'sick-of-waiting-graphic-01',
     type: 'image',
@@ -98,6 +112,7 @@ const media = {
     orientation: 'landscape',
     order: 3,
   },
+
   sickOfWaitingGraphicTwo: {
     id: 'sick-of-waiting-graphic-02',
     type: 'image',
@@ -109,6 +124,7 @@ const media = {
     orientation: 'landscape',
     order: 4,
   },
+
   sunwayOrientationCover: {
     id: 'sunway-college-orientation-cover',
     type: 'image',
@@ -120,6 +136,7 @@ const media = {
     orientation: 'landscape',
     order: 1,
   },
+
   sunwayOrientationVideo: {
     id: 'sunway-college-orientation-main-video',
     type: 'video',
@@ -133,6 +150,7 @@ const media = {
     duration: '00:32',
     order: 2,
   },
+
   tidesCover: {
     id: 'tides-mv-teaser-cover',
     type: 'image',
@@ -144,6 +162,7 @@ const media = {
     orientation: 'landscape',
     order: 1,
   },
+
   tidesVideo: {
     id: 'tides-mv-teaser-main-video',
     type: 'video',
@@ -187,12 +206,13 @@ const projectList = [
     outcome:
       'A compact release package with a finished teaser, campaign poster, and supporting image direction for release promotion.',
     cover: media.sickOfWaitingCover,
-    previewVideo: media.sickOfWaitingVideo.src,
+    previewVideo: sickOfWaitingPreview,
     fullVideo: media.sickOfWaitingVideo,
     gallery: [media.sickOfWaitingGraphicOne, media.sickOfWaitingGraphicTwo],
     featured: true,
     order: 1,
   },
+
   {
     id: 2,
     slug: 'sunway-college-orientation',
@@ -214,12 +234,13 @@ const projectList = [
     outcome:
       'A concise event video suitable for campus channels, student sharing, and future orientation promotion.',
     cover: media.sunwayOrientationCover,
-    previewVideo: media.sunwayOrientationVideo.src,
+    previewVideo: sunwayOrientationPreview,
     fullVideo: media.sunwayOrientationVideo,
     gallery: [],
     featured: true,
     order: 2,
   },
+
   {
     id: 3,
     slug: 'tides-mv-teaser',
@@ -241,12 +262,13 @@ const projectList = [
     outcome:
       'A focused music video teaser that can work as a release preview, story post, or portfolio editing piece.',
     cover: media.tidesCover,
-    previewVideo: media.tidesVideo.src,
+    previewVideo: tidesPreview,
     fullVideo: media.tidesVideo,
     gallery: [],
     featured: true,
     order: 3,
   },
+
   {
     id: 4,
     slug: 'music-teaser',
@@ -268,12 +290,13 @@ const projectList = [
     outcome:
       'A short teaser ready for reels, stories, and portfolio presentation as a compact editing sample.',
     cover: media.phunkLoveCover,
-    previewVideo: media.phunkLoveVideo.src,
+    previewVideo: phunkLovePreview,
     fullVideo: media.phunkLoveVideo,
     gallery: [],
     featured: true,
     order: 4,
   },
+
   {
     id: 5,
     slug: 'sick-of-waiting-poster-direction',
@@ -299,6 +322,7 @@ const projectList = [
     featured: false,
     order: 5,
   },
+
   {
     id: 6,
     slug: 'portfolio-identity-frames',
@@ -326,7 +350,10 @@ const projectList = [
   },
 ] satisfies Project[]
 
-export const projects: Project[] = [...projectList].sort((first, second) => first.order - second.order)
+export const projects: Project[] = [...projectList].sort(
+  (first, second) => first.order - second.order,
+)
+
 export const videoProjects = projects.filter((project) => Boolean(project.fullVideo))
 
 export function getProjectBySlug(slug: string) {
@@ -335,8 +362,10 @@ export function getProjectBySlug(slug: string) {
 
 export function getNextProject(currentSlug: string) {
   const currentIndex = videoProjects.findIndex((project) => project.slug === currentSlug)
+
   if (currentIndex < 0) {
     return videoProjects[0] ?? projects[0]
   }
+
   return videoProjects[(currentIndex + 1) % videoProjects.length]
 }
