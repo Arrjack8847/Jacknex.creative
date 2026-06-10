@@ -1,6 +1,7 @@
 import {
   useCallback,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import { AnimatePresence } from 'framer-motion'
@@ -31,6 +32,36 @@ export function WorkPage() {
 
   const [activePreviewId, setActivePreviewId] =
     useState<string | null>(null)
+
+  const activePreviewIdRef = useRef<string | null>(null)
+
+  const setActivePreview = useCallback(
+    (
+      projectId: string | null,
+      options?: { force?: boolean },
+    ) => {
+      if (projectId == null) {
+        activePreviewIdRef.current = null
+        setActivePreviewId(null)
+        return true
+      }
+
+      const currentPreviewId = activePreviewIdRef.current
+
+      if (
+        currentPreviewId != null &&
+        currentPreviewId !== projectId &&
+        !options?.force
+      ) {
+        return false
+      }
+
+      activePreviewIdRef.current = projectId
+      setActivePreviewId(projectId)
+      return true
+    },
+    [],
+  )
 
   const filterOptions = useMemo<FilterOption[]>(() => {
     const categoryOptions = projectCategories
@@ -94,16 +125,16 @@ export function WorkPage() {
         return
       }
 
-      setActivePreviewId(null)
+      setActivePreview(null)
       setActiveFilter(value)
     },
-    [activeFilter],
+    [activeFilter, setActivePreview],
   )
 
   const handleShowAll = useCallback(() => {
-    setActivePreviewId(null)
+    setActivePreview(null)
     setActiveFilter('all')
-  }, [])
+  }, [setActivePreview])
 
   return (
     <PageLayout
@@ -263,7 +294,7 @@ export function WorkPage() {
                         }
                         index={0}
                         onPreviewRequest={
-                          setActivePreviewId
+                          setActivePreview
                         }
                         project={featuredProject}
                         variant="wide"
@@ -379,7 +410,7 @@ export function WorkPage() {
                             index={index + 1}
                             key={project.slug}
                             onPreviewRequest={
-                              setActivePreviewId
+                              setActivePreview
                             }
                             project={project}
                           />

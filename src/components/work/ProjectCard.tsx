@@ -18,7 +18,10 @@ interface ProjectCardProps {
   project: Project
   activePreviewId?: string | null
   index?: number
-  onPreviewRequest?: (projectId: string | null) => void
+  onPreviewRequest?: (
+    projectId: string | null,
+    options?: { force?: boolean },
+  ) => boolean | void
   variant?: 'standard' | 'wide' | 'tall'
 }
 
@@ -114,6 +117,8 @@ export function ProjectCard({
 
       clearTimers()
       setShowLoader(false)
+      setCanPlay(false)
+      setShouldLoadPreview(false)
       setStatus(nextStatus)
 
       const video = videoRef.current
@@ -221,7 +226,6 @@ export function ProjectCard({
       !video ||
       !validPreviewVideo ||
       !shouldLoadPreview ||
-      !canPlay ||
       !playbackRequestedRef.current ||
       playAttemptInFlightRef.current
     ) {
@@ -229,7 +233,8 @@ export function ProjectCard({
     }
 
     if (video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
-      return
+      setStatus('loading')
+      ensureLoadingTimers(requestId)
     }
 
     playAttemptInFlightRef.current = true
@@ -281,8 +286,8 @@ export function ProjectCard({
       }
     }
   }, [
-    canPlay,
     clearTimers,
+    ensureLoadingTimers,
     markPreviewError,
     onPreviewRequest,
     project.slug,
@@ -292,8 +297,18 @@ export function ProjectCard({
     validPreviewVideo,
   ])
 
-  const requestPreview = useCallback(() => {
+  const requestPreview = useCallback((force = false) => {
     if (!canPreview || !validPreviewVideo || playbackRequestedRef.current) {
+      return
+    }
+
+    if (!force && activePreviewId != null && activePreviewId !== project.slug) {
+      return
+    }
+
+    const previewWasAccepted = onPreviewRequest?.(project.slug, { force })
+
+    if (previewWasAccepted === false) {
       return
     }
 
@@ -306,8 +321,6 @@ export function ProjectCard({
     playAttemptInFlightRef.current = false
     ownsPreviewRequestRef.current = true
 
-    onPreviewRequest?.(project.slug)
-
     setShouldLoadPreview(true)
     setShowLoader(false)
     setStatus('loading')
@@ -315,6 +328,7 @@ export function ProjectCard({
 
     startLoadingTimers(requestId)
   }, [
+    activePreviewId,
     canPreview,
     onPreviewRequest,
     project.slug,
@@ -361,10 +375,10 @@ export function ProjectCard({
   }, [canPreview, requestPreview, stopPreview])
 
   useEffect(() => {
-    if (!canPlay || !shouldLoadPreview || !playbackRequestedRef.current) return
+    if (!shouldLoadPreview || !playbackRequestedRef.current) return
 
     void attemptPlayback()
-  }, [attemptPlayback, canPlay, playRequestVersion, shouldLoadPreview])
+  }, [attemptPlayback, playRequestVersion, shouldLoadPreview])
 
   useEffect(() => {
     if (
@@ -512,7 +526,7 @@ export function ProjectCard({
             muted
             playsInline
             poster={cover.src}
-            preload="none"
+            preload={shouldLoadPreview ? 'auto' : 'none'}
             ref={videoRef}
             src={shouldLoadPreview ? validPreviewVideo : undefined}
             onAbort={() => {
@@ -660,7 +674,7 @@ export function ProjectCard({
                 return
               }
 
-              requestPreview()
+              requestPreview(true)
             }}
             type="button"
           >
