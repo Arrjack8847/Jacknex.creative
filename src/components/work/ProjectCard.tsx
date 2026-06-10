@@ -50,6 +50,7 @@ export function ProjectCard({
   const prefersReducedMotion = usePrefersReducedMotion()
 
   const cardRef = useRef<HTMLElement>(null)
+  const mediaRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const loadTimeoutRef = useRef<number | undefined>(undefined)
   const loaderDelayRef = useRef<number | undefined>(undefined)
@@ -80,6 +81,7 @@ export function ProjectCard({
   const [shouldLoadPreview, setShouldLoadPreview] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
   const [canPlay, setCanPlay] = useState(false)
+  const [mediaInPreviewRange, setMediaInPreviewRange] = useState(false)
   const [playRequestVersion, setPlayRequestVersion] = useState(0)
 
   const clearLoaderDelay = useCallback(() => {
@@ -218,14 +220,14 @@ export function ProjectCard({
     [ensureLoaderDelay, ensureLoadTimeout],
   )
 
-  const attemptPlayback = useCallback(async () => {
+  const attemptPlayback = useCallback(async (allowPendingLoad = false) => {
     const video = videoRef.current
     const requestId = playbackRequestIdRef.current
 
     if (
       !video ||
       !validPreviewVideo ||
-      !shouldLoadPreview ||
+      (!shouldLoadPreview && !allowPendingLoad) ||
       !playbackRequestedRef.current ||
       playAttemptInFlightRef.current
     ) {
@@ -327,8 +329,21 @@ export function ProjectCard({
     setPlayRequestVersion((currentVersion) => currentVersion + 1)
 
     startLoadingTimers(requestId)
+
+    if (force) {
+      const video = videoRef.current
+
+      if (video) {
+        video.src = validPreviewVideo
+        video.preload = 'auto'
+        video.load()
+      }
+
+      void attemptPlayback(true)
+    }
   }, [
     activePreviewId,
+    attemptPlayback,
     canPreview,
     onPreviewRequest,
     project.slug,
@@ -350,29 +365,45 @@ export function ProjectCard({
   )
 
   useEffect(() => {
-    const card = cardRef.current
+    const media = mediaRef.current
 
-    if (!card || !canPreview) return
+    if (!media || !canPreview) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
-          requestPreview()
+        const isInPreviewRange =
+          entry.isIntersecting && entry.intersectionRatio >= 0.55
+
+        setMediaInPreviewRange(isInPreviewRange)
+
+        if (isInPreviewRange) {
           return
         }
 
         stopPreview('idle')
       },
       {
-        threshold: [0, 0.35, 0.65, 1],
-        rootMargin: '0px 0px -8% 0px',
+        threshold: [0, 0.25, 0.55, 0.75, 1],
+        rootMargin: '0px 0px -10% 0px',
       },
     )
 
-    observer.observe(card)
+    observer.observe(media)
 
     return () => observer.disconnect()
-  }, [canPreview, requestPreview, stopPreview])
+  }, [canPreview, stopPreview])
+
+  useEffect(() => {
+    if (!mediaInPreviewRange || !canPreview) return
+
+    const retryFrame = window.requestAnimationFrame(() => {
+      requestPreview()
+    })
+
+    return () => {
+      window.cancelAnimationFrame(retryFrame)
+    }
+  }, [canPreview, mediaInPreviewRange, requestPreview])
 
   useEffect(() => {
     if (!shouldLoadPreview || !playbackRequestedRef.current) return
@@ -479,6 +510,7 @@ export function ProjectCard({
       layout
     >
       <div
+        ref={mediaRef}
         className="project-card-media relative aspect-video overflow-hidden rounded-md border border-(--line) bg-black shadow-[0_18px_52px_rgba(0,0,0,0.36)] transition-colors duration-300 group-hover/project:border-(--line-strong)"
         data-media-orientation={cover.orientation}
         onPointerMove={(event) => {
