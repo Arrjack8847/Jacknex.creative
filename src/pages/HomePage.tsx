@@ -99,7 +99,7 @@ const responsiveControls = {
     mediaPosition: {
       mobile: '67% 50%',
       tablet: '55% 50%',
-      laptop: '50% 50%',
+      laptop: '50% 35%',
     },
     mediaScale: {
       mobile: '1.01',
